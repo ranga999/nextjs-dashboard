@@ -123,26 +123,10 @@ export async function updateInvoice(id: string, prevState: State, formData: Form
     redirect('/dashboard/invoices');
   }
 
-// Use Zod to update the expected types
-const DeleteInvoice = FormSchema.omit({ id: true, date: true });
-
-export async function deleteInvoice(id: string, formData: FormData) {
-
-   throw new Error('Failed to Delete Invoice');
-   
-    try{
-        await sql`
-        DELETE FROM invoices
-        WHERE id = ${id}
-      `;
-    }catch(error){
-      console.error(error);
-      return { message: 'Database Error: Failed to Delete Invoice.' };
-    }
-
-    revalidatePath('/dashboard/invoices');
-  }
-
+export async function deleteInvoice(id: string) {
+  await sql`DELETE FROM invoices WHERE id = ${id}`;
+  revalidatePath('/dashboard/invoices');
+}
 // User Sign-in Action
 export async function authenticate(
   prevState: string | undefined,
